@@ -1,0 +1,21 @@
+[init]
+	defaultBranch = main
+[gpg]
+	format = ssh
+[user]
+	signingkey = ~/.ssh/id_ed25519.pub
+	name = {{ onepasswordRead "op://dotfiles/ssh_my/name" }}
+	email = {{ onepasswordRead "op://dotfiles/ssh_my/email" }}
+[core]
+	editor = vim
+	eol = lf
+[gpg "ssh"]
+	allowedSignersFile = ~/.config/git/allowed_signers
+[tag]
+	gpgsign = true
+[commit]
+	gpgsign = true
+[pull]
+	rebase = true
+[push]
+	autoSetupRemote = true
