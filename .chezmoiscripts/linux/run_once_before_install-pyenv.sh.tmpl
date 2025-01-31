@@ -2,9 +2,7 @@
 {{ if eq .chezmoi.osRelease.id "ubuntu" -}}
 #!/bin/sh
 
-sudo apt install -y \
-  curl \
-  zsh
+curl -sS https://pyenv.run | bash
 
 {{ end -}}
 {{ end -}}
