@@ -2,7 +2,7 @@ README.md
 LICENSE
 
 {{- if eq .chezmoi.os "windows" }}
-private_dot_ssh/*
-dot_bash*
-dot_zshrc.tmpl
+.ssh/*
+.bash*
+.zshrc
 {{- end }}
