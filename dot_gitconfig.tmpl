@@ -12,6 +12,9 @@
 {{- end }}
 {{- if eq .chezmoi.os "linux" }}
 	editor = vim
+{{- if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+	sshCommand = "ssh.exe"
+{{- end }}
 {{- end }}
 	eol = lf
 [gpg "ssh"]
@@ -27,3 +30,5 @@
 	rebase = true
 [push]
 	autoSetupRemote = true
+[log]
+	showSignature = true
