@@ -1,0 +1,14 @@
+
+{{ if eq .chezmoi.os "windows" -}}
+#!/usr/bin/env pwsh
+
+winget install -e --id Git.Git
+winget install -e --id twpayne.chezmoi
+winget install -e --id Microsoft.VisualStudioCode
+winget install -e --id Starship.Starship
+winget install -e --id Balena.Etcher
+winget install -e --id Discord.Discord
+winget install -e --id GnuPG.GnuPG
+winget install -e --id AgileBits.1Password
+
+{{ end -}}
