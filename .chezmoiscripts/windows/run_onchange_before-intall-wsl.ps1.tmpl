@@ -1,0 +1,24 @@
+{{- if eq .chezmoi.os "windows" }}
+#!/usr/bin/env pwsh
+
+# Check if Ubuntu 24.04 is installed
+$installedDistros = wsl.exe --list
+if ($installedDistros -contains 'Ubuntu-24.04') {
+    Write-Output "Ubuntu 24.04 is already installed."
+} else {
+    Write-Output "Installing Ubuntu 24.04..."
+    # wsl.exe --install -d Ubuntu-24.04
+    Write-Output "Ubuntu 24.04 installation initiated. Please follow the on-screen instructions to complete the setup."
+}
+
+# Change WSLENV to include the PATH
+$wslEnv = [Environment]::GetEnvironmentVariable('WSLENV', 'Machine')
+if ($wslEnv -notlike '*USERPROFILE/p*') {
+    Write-Output "Adding USERPROFILE/p to WSLENV..."
+    gsudo powershell "[Environment]::SetEnvironmentVariable('WSLENV', $wslEnv + 'USERPROFILE/p:', 'Machine')"
+    Write-Output "WSLENV updated."
+} else {
+    Write-Output "WSLENV already includes USERPROFILE/p."
+}
+
+{{- end }}

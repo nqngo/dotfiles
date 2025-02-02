@@ -17,6 +17,7 @@
 {{- end }}
 {{- end }}
 	eol = lf
+	autocrlf = input
 [gpg "ssh"]
 	allowedSignersFile = ~/.config/git/allowed_signers
 {{- if eq .chezmoi.os "windows" }}
