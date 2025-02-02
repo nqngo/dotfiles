@@ -13,3 +13,11 @@ fi
 # ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
+
+{{- if eq .chezmoi.os "linux" }}
+{{ if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+# WSL 1Password ssh-agent forwarding
+alias ssh='ssh.exe'
+alias ssh-add='ssh-add.exe'
+{{- end -}}
+{{- end }}

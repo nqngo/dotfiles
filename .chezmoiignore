@@ -5,3 +5,6 @@ LICENSE
 .bash*
 .zshrc
 {{- end }}
+{{- if ne .chezmoi.os "windows" }}
+OneDrive
+{{- end }}
