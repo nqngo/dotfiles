@@ -20,14 +20,7 @@
 	autocrlf = input
 [gpg "ssh"]
 	allowedSignersFile = ~/.config/git/allowed_signers
-{{- if eq .chezmoi.os "windows" }}
-	program = "{{ .chezmoi.homeDir }}/AppData/Local/1Password/app/8/op-ssh-sign.exe"
-{{- end }}
-{{- if eq .chezmoi.os "linux" }}
-{{- if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
 	program = {{ env "USERPROFILE" }}/AppData/Local/1Password/app/8/op-ssh-sign.exe
-{{- end }}
-{{- end }}
 [tag]
 	gpgsign = true
 [commit]
