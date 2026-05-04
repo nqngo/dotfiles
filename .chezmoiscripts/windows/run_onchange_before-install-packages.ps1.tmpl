@@ -11,6 +11,51 @@ winget install -e --id Discord.Discord
 winget install -e --id GnuPG.GnuPG
 winget install -e --id AgileBits.1Password
 winget install -e --id AgileBits.1Password.CLI
-winget install -e --id gerardog.gsudo
 
+# Check sudo rights and install gsudo if needed
+$ErrorActionPreference = "Stop"
+
+$RegistryPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Sudo"
+$DesiredMode = 3 # 3 = Inline (No new shell)
+
+# 1. Check if native Windows Sudo is supported on this machine
+if (Test-Path "$env:windir\System32\sudo.exe") {
+    
+    # 2. Check current state to prevent unnecessary UAC prompts on subsequent runs
+    $CurrentMode = (Get-ItemProperty -Path $RegistryPath -Name "Enabled" -ErrorAction SilentlyContinue).Enabled
+    
+    if ($CurrentMode -eq $DesiredMode) {
+        Write-Output "Native Windows Sudo is already enabled in Inline mode. Skipping."
+        Exit
+    }
+
+    # 3. If not enabled or in the wrong mode, check for Admin rights
+    $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+    if (-not $isAdmin) {
+        Write-Warning "Native Sudo needs configuring. Elevating..."
+        # Relaunch the script as Administrator and wait for it to complete
+        Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs -Wait
+        Exit
+    }
+
+    # 4. Apply the registry setting (Only runs in the elevated context)
+    if (-not (Test-Path $RegistryPath)) {
+        New-Item -Path $RegistryPath -Force | Out-Null
+    }
+    Set-ItemProperty -Path $RegistryPath -Name "Enabled" -Value $DesiredMode -Type DWord -Force
+    
+    Write-Output "Native Windows Sudo enabled in Inline mode successfully."
+
+} else {
+    # Fallback to gsudo if native Sudo isn't found
+    Write-Output "Native Windows Sudo not found. Checking for gsudo..."
+    
+    if (Get-Command "gsudo" -ErrorAction SilentlyContinue) {
+        Write-Output "gsudo is already installed. Skipping."
+    } else {
+        Write-Output "Installing gsudo via winget..."
+        winget install gerardog.gsudo --exact --silent --accept-package-agreements --accept-source-agreements
+    }
+}
 {{ end -}}
