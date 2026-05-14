@@ -7,4 +7,6 @@ LICENSE
 {{- end }}
 {{- if ne .chezmoi.os "windows" }}
 OneDrive
+Documents
+AppData
 {{- end }}
