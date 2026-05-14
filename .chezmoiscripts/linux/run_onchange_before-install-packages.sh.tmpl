@@ -5,8 +5,10 @@
 # Install packages
 sudo apt install -y \
   build-essential \
+  clustershell \
   curl \
   git \
+  jq \
   libbz2-dev \
   libffi-dev \
   liblzma-dev \
@@ -25,5 +27,7 @@ sudo apt install -y \
 # Setup directories
 mkdir -p ~/projects
 
+# Install snap packages
+sudo snap install bw
 {{ end -}}
 {{ end -}}
