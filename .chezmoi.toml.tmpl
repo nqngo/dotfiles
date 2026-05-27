@@ -1,0 +1,10 @@
+{{- $choices := list "work" "home" "lab" -}}
+{{- $location := promptChoiceOnce . "location" "Select the location for this machine" $choices -}}
+
+[data]
+location = {{ $location | quote }}
+
+{{ if eq .chezmoi.os "windows" }}
+[cd]
+command = "powershell"
+{{ end }}

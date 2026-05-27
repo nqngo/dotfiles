@@ -34,9 +34,18 @@ if [ -d .local/bin ]; then
   export PATH=$HOME/.local/bin:/snap/bin:$PATH
 fi
 
+# NVM PATH
+if [ -d "$HOME/.nvm" ]; then
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+fi
+
 # Add bash_aliases
 source $HOME/.bash_aliases
 
 {{ template "zsh_starship.tmpl" }}
 
 {{ template "bash_pyenv.tmpl" }}
+
+{{ template "bitwarden_globalenv.tmpl" . }}
