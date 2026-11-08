@@ -10,9 +10,22 @@ if [ -x /usr/bin/dircolors ]; then
   alias egrep='egrep --color=auto'
 fi
 
-# ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
+# Modern CLI aliases (eza, bat)
+if command -v eza >/dev/null 2>&1; then
+  alias ls='eza'
+  alias ll='eza -la'
+  alias la='eza -a'
+  alias lt='eza --tree'
+else
+  alias ll='ls -alF'
+  alias la='ls -A'
+fi
+
+if command -v bat >/dev/null 2>&1; then
+  alias cat='bat'
+elif command -v batcat >/dev/null 2>&1; then
+  alias cat='batcat'
+fi
 
 {{- if eq .chezmoi.os "linux" }}
 {{ if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
