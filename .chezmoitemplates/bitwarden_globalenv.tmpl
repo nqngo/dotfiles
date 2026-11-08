@@ -1,15 +1,22 @@
 {{ if eq .location "work" }}
-# Bitwarden Secrets Loader (Work Location Only)
+# Bitwarden Secrets Loader
 function load_bw_secrets() {
+    local secret_name="${1:-GlobalEnv}"
+
     if [ -z "$BW_SESSION" ] || ! bw status | grep -q '"status":"unlocked"'; then
         echo "🔐 Bitwarden is locked. Please enter your Master Password."
         export BW_SESSION=$(bw unlock --raw)
     fi
 
     if [ -n "$BW_SESSION" ]; then
-        echo "⬇️ Fetching global secrets..."
-        eval "$(bw get notes "GlobalEnv")"
-        echo "✅ Secrets successfully loaded!"
+        echo "⬇️ Fetching secrets for: $secret_name..."
+        local notes
+        if notes=$(bw get notes "$secret_name"); then
+            eval "$notes"
+            echo "✅ Secrets successfully loaded!"
+        else
+            echo "❌ Failed to fetch secrets for: $secret_name."
+        fi
     else
         echo "❌ Failed to unlock Bitwarden."
     fi
