@@ -1,0 +1,10 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+
+# config.toml hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+if command -v mise >/dev/null 2>&1; then
+  mise install --yes
+elif [ -x "$HOME/.local/bin/mise" ]; then
+  "$HOME/.local/bin/mise" install --yes
+fi
+{{ end -}}

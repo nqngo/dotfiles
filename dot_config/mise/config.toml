@@ -1,0 +1,5 @@
+[tools]
+node = "lts"
+eza = "latest"
+bat = "latest"
+zoxide = "latest"

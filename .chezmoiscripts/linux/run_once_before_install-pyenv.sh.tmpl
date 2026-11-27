@@ -1,8 +1,0 @@
-{{ if eq .chezmoi.os "linux" -}}
-{{ if eq .chezmoi.osRelease.id "ubuntu" -}}
-#!/bin/sh
-
-curl -sS https://pyenv.run | bash
-
-{{ end -}}
-{{ end -}}
